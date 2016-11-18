@@ -324,8 +324,11 @@ BEGIN
     yw_count SMALLINT,
     rz_count SMALLINT,
     rw_count SMALLINT,
-    wz_count SMALLINT
-  );
+    wz_count SMALLINT,
+    --- IMPORTANT 
+    index(station_telecode,train_date,train_no,direction_name,limit_station_name) USING BTREE,
+    index(train_code) USING BTREE
+  ) ENGINE=MEMORY;
   truncate table tt_WJK_LEFT_remain_ticket;
 
 
@@ -693,7 +696,7 @@ BEGIN
     --- Error? ns_train_no not inited
     SET ns_train_code = SUBSTRING(ns_train_no,3,8);
 
-    --- use trim instead of WHILE
+    --- IMPORTANT use trim instead of WHILE
     SET ns_train_code = TRIM(LEADING '0' FROM ns_train_code);
     /* WHILE LEFT(ns_train_code,1) = '0' DO */
     /*   SET SWV_ns_train_code_Str = SUBSTRING(ns_train_code,2,8); */
@@ -720,7 +723,7 @@ BEGIN
       end if;
       SET ns_train_code = SUBSTRING(ns_train_no,3,8);
 
-      --- use TRIM instead of WHILE
+      --- IMPORTANT use TRIM instead of WHILE
       SET ns_train_code = TRIM(LEADING '0' FROM ns_train_code);
       /* WHILE LOCATE('0',ns_train_code) = 1 DO */
       /*   SET SWV_ns_train_code_Str = SUBSTRING(ns_train_code,2,8); */
@@ -950,7 +953,7 @@ BEGIN
                   LEAVE step_two;
                 end if;
                 SET ns_train_code = SUBSTRING(ns_train_no,3,8);
-                --- use trim instead of LOCATE
+                --- IMPORTANT use trim instead of LOCATE
                 SET ns_train_code = TRIM(LEADING '0' FROM ns_train_code);
                 /* WHILE LOCATE('0',ns_train_code) = 1 DO */
                 /*   SET SWV_ns_train_code_Str = SUBSTRING(ns_train_code,2,8); */
