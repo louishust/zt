@@ -52,6 +52,7 @@ BEGIN
   DECLARE ns_start_time CHAR(4);
   DECLARE ns_station_telecode CHAR(3);
 
+  DECLARE be_types CHAR(1);
   DECLARE yz_types VARCHAR(20);
   DECLARE yw_types VARCHAR(20);
   DECLARE rz_types VARCHAR(20);
@@ -138,12 +139,18 @@ BEGIN
   declare return_out int;
 
 
+  DECLARE assign_station_in_len int;
 
+
+  --- modify the logic 
+  /* DECLARE read_seattypes CURSOR FOR */
+  /* SELECT wjk_tt_tmp_seat_type_tmp.seat_type_code */
+  /* FROM wjk_tt_tmp_seat_type_tmp */
+  /* WHERE LOCATE(wjk_tt_tmp_seat_type_tmp.belong_seat_type_code,pTypes) > 0; */
 
   DECLARE read_seattypes CURSOR FOR
-  SELECT wjk_tt_tmp_seat_type_tmp.seat_type_code
-  FROM wjk_tt_tmp_seat_type_tmp
-  WHERE LOCATE(wjk_tt_tmp_seat_type_tmp.belong_seat_type_code,pTypes) > 0;
+  SELECT wjk_tt_tmp_seat_type_tmp.seat_type_code, belong_seat_type_code
+  FROM wjk_tt_tmp_seat_type_tmp;
 
 
   DECLARE cur_notice CURSOR FOR
@@ -209,6 +216,7 @@ BEGIN
   from basic.station_dictionary
   where station_dictionary.station_telecode = SUBSTRING(assign_station_in,1,3);
 
+  ---add index (inner_code, train_code, ticket_type, stop_date)
   select   max(DJ50_train_sale_define.control_day)
   INTO control_day
   from basic.DJ50_train_sale_define
@@ -222,44 +230,34 @@ BEGIN
   if out_flag=2 THEN
     select '2===== is here';
   end if;
-  if plan_train_date_in = '' and flag_in in(2,3) then
-
-    if bureau_code <> 'P' then
-
-      if oi_train_days_in >= 5 or oi_train_days_in < 1 then
+  --- modify to one if
+  if plan_train_date_in = '' then
+    if flag_in in(2,3) then
+      if bureau_code <> 'P' and (oi_train_days_in >= 5 or oi_train_days_in < 1) then
         SET oi_train_days_in = 5;
-      end if;
-    end if;
-    if bureau_code = 'P' then
-
-      if oi_train_days_in >= 6 or oi_train_days_in < 1 then
+      elseif bureau_code = 'P' and (oi_train_days_in >= 6 or oi_train_days_in < 1) then
         SET oi_train_days_in = 6;
       end if;
+
+      SET date_range_n_begin = DATE_FORMAT(CURRENT_TIMESTAMP,'%Y%m%d');
+      SET date_range_n_end = DATE_FORMAT(TIMESTAMPADD(DAY,oi_train_days_in -1,CURRENT_TIMESTAMP),'%Y%m%d');
+      SET date_range_f_begin = DATE_FORMAT(TIMESTAMPADD(DAY,control_day -oi_train_days_in+1,CURRENT_TIMESTAMP),
+        '%Y%m%d');
+      SET date_range_f_end = DATE_FORMAT(TIMESTAMPADD(DAY,control_day,CURRENT_TIMESTAMP),'%Y%m%d');
+    else
+      SET date_range_n_begin = DATE_FORMAT(CURRENT_TIMESTAMP,'%Y%m%d');
+      SET date_range_n_end = DATE_FORMAT(TIMESTAMPADD(DAY,oi_train_days_in -1,CURRENT_TIMESTAMP),'%Y%m%d');
+      SET date_range_f_begin = '20991231';
+      SET date_range_f_end = '20991231';
     end if;
-    SET date_range_n_begin = DATE_FORMAT(CURRENT_TIMESTAMP,'%Y%m%d');
-    SET date_range_n_end = DATE_FORMAT(TIMESTAMPADD(DAY,oi_train_days_in -1,CURRENT_TIMESTAMP),'%Y%m%d');
-    SET date_range_f_begin = DATE_FORMAT(TIMESTAMPADD(DAY,control_day -oi_train_days_in+1,CURRENT_TIMESTAMP),
-      '%Y%m%d');
-    SET date_range_f_end = DATE_FORMAT(TIMESTAMPADD(DAY,control_day,CURRENT_TIMESTAMP),'%Y%m%d');
-  end if;
-
-  if plan_train_date_in = '' and flag_in not in(2,3) then
-
-    SET date_range_n_begin = DATE_FORMAT(CURRENT_TIMESTAMP,'%Y%m%d');
-    SET date_range_n_end = DATE_FORMAT(TIMESTAMPADD(DAY,oi_train_days_in -1,CURRENT_TIMESTAMP),'%Y%m%d');
-    SET date_range_f_begin = '20991231';
-    SET date_range_f_end = '20991231';
-
-  end if;
-
-  if plan_train_date_in <> '' then
-
+  else
     SET date_range_n_begin = plan_train_date_in;
     SET date_range_n_end = plan_train_date_in;
     SET date_range_f_begin = '20991231';
     SET date_range_f_end = '20991231';
-
   end if;
+
+
   if out_flag=2 THEN
     select ('3=== is here');
   end if;
@@ -337,24 +335,18 @@ BEGIN
 
   SET assign_station_in = ltrim(rtrim(assign_station_in));
 
+  --- right? the DG30_my_center just have one row?
   select   DG30_my_center.my_center_code
   INTO my_center_code
   from center.DG30_my_center;
 
-  IF oi_train_days_in IS NULL then
+  --- into one if
+  IF oi_train_days_in IS NULL or (oi_train_days_in <= 0) then
     SET oi_train_days_in = 3;
   end if;
-  IF oi_train_days_in <= 0 then
-    SET oi_train_days_in = 3;
-  end if;
-  IF os_purposes_in IS NULL then
+  IF os_purposes_in IS NULL or (os_purposes_in = '') then
     SET os_purposes_in = '00';
   end if;
-  IF os_purposes_in = '' then
-    SET os_purposes_in = '00';
-  end if;
-
-
 
   CREATE TEMPORARY TABLE IF not EXISTS  wjk_tt_tmp_seat_type_tmp
   AS
@@ -372,8 +364,21 @@ BEGIN
   where wjk_tt_tmp_seat_type_tmp.seat_type_code = 'O'
   and wjk_tt_tmp_seat_type_tmp.belong_seat_type_name = 'Èí×ù';
 
+  /* try with view or table with memory engine */
+  /* create view wjk_tt_tmp_seat_type_tmp */
+  /* AS */
+  /* select seat_type.seat_type_code, */
+  /* seat_type.seat_type_name, */
+  /* IF(seat_type_code = 'O' and belong_seat_type_name = 'Èí×ù', 1, belong_seat_type_code), */
+  /* IF(seat_type_code = 'O' and belong_seat_type_name = 'Ó²×ù', 1, belong_seat_type_name) as belong_seat_type_name , */
+  /* seat_type.print_seat_type_name, */
+  /* seat_type.display_seat_type_name */
+  /* from basic.seat_type; */
+
+  /* default_tmp_storage_engine=Memory; */
 
 
+/*
   SET yz_types = '';
   SET pTypes = '1';
   SET @SWV_Error = 0;
@@ -485,7 +490,28 @@ BEGIN
     FETCH read_seattypes INTO wz_types;
   END WHILE;
   CLOSE read_seattypes;
+*/
 
+  SET be_types = '';
+  SET yz_types = '';
+  SET yw_types = '';
+  SET rz_types = '';
+  SET rw_types = '';
+  SET pTypes = '46';
+  OPEN read_seattypes;
+  SET NO_DATA = 0;
+  FETCH read_seattypes INTO wz_types, be_types;
+  WHILE NO_DATA != 2 DO
+    CASE
+      WHEN be_types = '1' THEN SET yz_types = CONCAT_WS(yz_types,wz_types);
+      WHEN be_types = '2' THEN SET rz_types = CONCAT_WS(rz_types,wz_types);
+      WHEN be_types in ('3', '5') THEN SET yw_types = CONCAT_WS(yw_types,wz_types);
+      WHEN be_types in ('4', '6') THEN SET rw_types = CONCAT_WS(rw_types,wz_types);
+    END CASE;
+    SET NO_DATA = 0;
+    FETCH read_seattypes INTO wz_types;
+  END WHILE;
+  CLOSE read_seattypes;
 
   SET wz_types = 'W';
 
@@ -563,6 +589,7 @@ BEGIN
   SET c_tmp_date = DATE_FORMAT(TIMESTAMPADD(day,(oi_train_days_in -1),c_today),'%Y%m%d');
   SET temp_date = DATE_FORMAT(CURRENT_TIMESTAMP,'%Y%m%d');
 
+--- this insert will be slow. REMOVE LOCATE? remove the temporary table ?
   insert into wjk_tt_tmp_center_notice
   select CJ30_center_notice.operate_time,
   CJ30_center_notice.start_date,
@@ -593,7 +620,8 @@ BEGIN
 
   SET tmp_no = 1;
 
-  WHILE tmp_no <= LENGTH(assign_station_in)/3 DO
+  SET assign_station_in_len = LENGTH(assign_station_in)/3;
+  WHILE tmp_no <= assign_station_in_len DO
     SET single_assign_station = SUBSTRING(assign_station_in,3*tmp_no -2,3);
     select   station_dictionary.station_name,
     station_dictionary.bureau_code
@@ -602,6 +630,7 @@ BEGIN
     from basic.station_dictionary
     where station_dictionary.station_telecode = single_assign_station;
 
+    --- IMPORTANT: try to remove wjk_tt_tmp_stop_time
     truncate table wjk_tt_tmp_stop_time;
     if plan_train_no_in = '%' then
 
@@ -661,11 +690,15 @@ BEGIN
 
       end if;
     end if;
+    --- Error? ns_train_no not inited
     SET ns_train_code = SUBSTRING(ns_train_no,3,8);
-    WHILE LOCATE('0',ns_train_code) = 1 DO
-      SET SWV_ns_train_code_Str = SUBSTRING(ns_train_code,2,8);
-      SET ns_train_code = SWV_ns_train_code_Str;
-    END WHILE;
+
+    --- use trim instead of WHILE
+    SET ns_train_code = TRIM(LEADING '0' FROM ns_train_code);
+    /* WHILE LEFT(ns_train_code,1) = '0' DO */
+    /*   SET SWV_ns_train_code_Str = SUBSTRING(ns_train_code,2,8); */
+    /*   SET ns_train_code = SWV_ns_train_code_Str; */
+    /* END WHILE; */
     select   station_dictionary.bureau_code
     INTO bureau_code
     FROM basic.station_dictionary
@@ -686,10 +719,13 @@ BEGIN
         select '10=== open cursor cur_train ',ns_train_no,ns_start_station_name,ns_end_station_name;
       end if;
       SET ns_train_code = SUBSTRING(ns_train_no,3,8);
-      WHILE LOCATE('0',ns_train_code) = 1 DO
-        SET SWV_ns_train_code_Str = SUBSTRING(ns_train_code,2,8);
-        SET ns_train_code = SWV_ns_train_code_Str;
-      END WHILE;
+
+      --- use TRIM instead of WHILE
+      SET ns_train_code = TRIM(LEADING '0' FROM ns_train_code);
+      /* WHILE LOCATE('0',ns_train_code) = 1 DO */
+      /*   SET SWV_ns_train_code_Str = SUBSTRING(ns_train_code,2,8); */
+      /*   SET ns_train_code = SWV_ns_train_code_Str; */
+      /* END WHILE; */
       select   train_dir.start_station_name,
       train_dir.end_station_name
       INTO ns_start_station_name,
@@ -717,7 +753,7 @@ BEGIN
 
         and DG50_train_location_auth.bureau_code = my_bureau_code
         AND DG50_train_location_auth.start_date <= c_tmp_date
-        AND DG50_train_location_auth.stop_date >= c_today ) then
+        AND DG50_train_location_auth.stop_date >= c_today limit 1) then
 
         SET ns_location_code = '00';
         if not exists(select 1 from basic.DG50_train_location_auth
@@ -841,14 +877,6 @@ BEGIN
               SET ni_day = ni_day+1;
     END WHILE;
 
-
-
-
-
-
-
-
-
     truncate table wjk_tt_tmp_stoptime;
 
     insert into wjk_tt_tmp_stoptime
@@ -870,10 +898,8 @@ BEGIN
       select * from wjk_tt_tmp_left_base_center order by wjk_tt_tmp_left_base_center.train_no,wjk_tt_tmp_left_base_center.train_date,wjk_tt_tmp_left_base_center.station_no,wjk_tt_tmp_left_base_center.far_from_station_no,wjk_tt_tmp_left_base_center.limit_station,wjk_tt_tmp_left_base_center.coach_no,wjk_tt_tmp_left_base_center.seat_type_code,wjk_tt_tmp_left_base_center.purpose_code,wjk_tt_tmp_left_base_center.ticket_quantity;
       select * from wjk_tt_tmp_stoptime order by tmp_train_no;
     end if;
-    while exists(select 1 from wjk_tt_tmp_stoptime) DO
+    while exists(select 1 from wjk_tt_tmp_stoptime limit 1) DO
       begin
-
-
         select   tmp_train_no,
         tmp_station_no,
         tmp_arrive_time,
@@ -913,7 +939,7 @@ BEGIN
 
                 if not exists(select 1 from wjk_tt_tmp_left_base_center
                   where wjk_tt_tmp_left_base_center.train_no = ns_train_no
-                  and wjk_tt_tmp_left_base_center.train_date = ns_train_date)
+                  and wjk_tt_tmp_left_base_center.train_date = ns_train_date limit 1)
                   then
 
                   SET yz_count = -1;
@@ -924,10 +950,12 @@ BEGIN
                   LEAVE step_two;
                 end if;
                 SET ns_train_code = SUBSTRING(ns_train_no,3,8);
-                WHILE LOCATE('0',ns_train_code) = 1 DO
-                  SET SWV_ns_train_code_Str = SUBSTRING(ns_train_code,2,8);
-                  SET ns_train_code = SWV_ns_train_code_Str;
-                END WHILE;
+                --- use trim instead of LOCATE
+                SET ns_train_code = TRIM(LEADING '0' FROM ns_train_code);
+                /* WHILE LOCATE('0',ns_train_code) = 1 DO */
+                /*   SET SWV_ns_train_code_Str = SUBSTRING(ns_train_code,2,8); */
+                /*   SET ns_train_code = SWV_ns_train_code_Str; */
+                /* END WHILE; */
                 SET i = -1;
                 SET j = 1;
                 select   count(*)
@@ -1034,7 +1062,7 @@ BEGIN
                   where wjk_tt_tmp_center_notice.start_date <= ns_train_date
                   and wjk_tt_tmp_center_notice.stop_date >= ns_train_date
                   and wjk_tt_tmp_center_notice.station_telecode = single_assign_station
-                  and wjk_tt_tmp_center_notice.train_no = ns_train_no)
+                  and wjk_tt_tmp_center_notice.train_no = ns_train_no limit 1)
                   then
 
                   open cur_notice;
@@ -1116,6 +1144,7 @@ BEGIN
                 begin
                   declare oo_single_assign_station varchar(20);
                   set oo_single_assign_station = single_assign_station;
+                  -- IMPORTANT optimize the PROC
                   CALL arith.CJ30_train_code(ns_train_date,c_train_no,oo_single_assign_station,out_flag,'',return_out);
                 end;
                 if out_flag=2 then
@@ -1268,7 +1297,7 @@ BEGIN
                 else
                   if not exists(select 1 from wjk_tt_tmp_left_base_center
                     where wjk_tt_tmp_left_base_center.train_date = ns_train_date
-                    and wjk_tt_tmp_left_base_center.train_no = ns_train_no)
+                    and wjk_tt_tmp_left_base_center.train_no = ns_train_no limit 1)
                     then
 
                     if (yz_yn = 'n') then
@@ -1491,6 +1520,7 @@ BEGIN
   END WHILE;
 
 
+  -- IMPORTANT : ADD INDEX
   CREATE TEMPORARY TABLE IF not EXISTS  wjk_tt_tmp
   AS
   select tt_WJK_LEFT_remain_ticket.train_code
@@ -1510,6 +1540,7 @@ BEGIN
       LEAVE SWL_return;
     end if;
 
+    --- IMPORTANT add index
     delete FROM tt_WJK_LEFT_remain_ticket
     where tt_WJK_LEFT_remain_ticket.train_code = tmp_train_code
     and tt_WJK_LEFT_remain_ticket.yz_count = -1
@@ -1533,6 +1564,7 @@ BEGIN
 
   SET ns_train_date = DATE_FORMAT(TIMESTAMPADD(day,9,CURRENT_TIMESTAMP),'%Y%m%d');
 
+  -- IMPORTANT ADD INDEX
   select tt_WJK_LEFT_remain_ticket.station_telecode,
   tt_WJK_LEFT_remain_ticket.train_no,
   tt_WJK_LEFT_remain_ticket.train_code,
