@@ -401,270 +401,270 @@ BEGIN
     end if;
     SET NO_DATA = 0;
     FETCH read_seattypes INTO wz_types;
-END WHILE;
-CLOSE read_seattypes;
+  END WHILE;
+  CLOSE read_seattypes;
 
-SET yw_types = '';
-SET pTypes = '35';
-SET @SWV_Error = 0;
-OPEN read_seattypes;
+  SET yw_types = '';
+  SET pTypes = '35';
+  SET @SWV_Error = 0;
+  OPEN read_seattypes;
 
-IF @SWV_Error != 0 then
-  LEAVE SWL_return;
-end if;
-SET NO_DATA = 0;
-FETCH read_seattypes INTO wz_types;
-WHILE NO_DATA != 2 DO
-  IF NO_DATA = 1 then
-
-    SET @SWV_Error = 30102;
-    SET SWP_Ret_Value = -1;
+  IF @SWV_Error != 0 then
     LEAVE SWL_return;
-  end if;
-  if out_flag=2 THEN
-    select '6==loop cursor read_seattypes',yw_types,wz_types;
-  end if;
-  IF wz_types IS NOT NULL then
-    SET yw_types = CONCAT(yw_types,wz_types);
   end if;
   SET NO_DATA = 0;
   FETCH read_seattypes INTO wz_types;
-END WHILE;
-CLOSE read_seattypes;
+  WHILE NO_DATA != 2 DO
+    IF NO_DATA = 1 then
 
-SET rz_types = '';
-SET pTypes = '2';
-SET @SWV_Error = 0;
-OPEN read_seattypes;
-IF @SWV_Error != 0 then
-  LEAVE SWL_return;
-end if;
-SET NO_DATA = 0;
-FETCH read_seattypes INTO wz_types;
-WHILE NO_DATA != 2 DO
-  IF NO_DATA = 1 then
+      SET @SWV_Error = 30102;
+      SET SWP_Ret_Value = -1;
+      LEAVE SWL_return;
+    end if;
+    if out_flag=2 THEN
+      select '6==loop cursor read_seattypes',yw_types,wz_types;
+    end if;
+    IF wz_types IS NOT NULL then
+      SET yw_types = CONCAT(yw_types,wz_types);
+    end if;
+    SET NO_DATA = 0;
+    FETCH read_seattypes INTO wz_types;
+  END WHILE;
+  CLOSE read_seattypes;
 
-    SET @SWV_Error = 30103;
-    SET SWP_Ret_Value = -1;
+  SET rz_types = '';
+  SET pTypes = '2';
+  SET @SWV_Error = 0;
+  OPEN read_seattypes;
+  IF @SWV_Error != 0 then
     LEAVE SWL_return;
-  end if;
-  if out_flag=2 THEN
-    select '7==loop cursor read_seattypes',rz_types,wz_types;
-  end if;
-  IF wz_types IS NOT NULL then
-    SET rz_types = CONCAT(rz_types,wz_types);
   end if;
   SET NO_DATA = 0;
   FETCH read_seattypes INTO wz_types;
-END WHILE;
-CLOSE read_seattypes;
+  WHILE NO_DATA != 2 DO
+    IF NO_DATA = 1 then
 
-SET rw_types = '';
-SET pTypes = '46';
-SET @SWV_Error = 0;
-OPEN read_seattypes;
-IF @SWV_Error != 0 then
-  LEAVE SWL_return;
-end if;
-SET NO_DATA = 0;
-FETCH read_seattypes INTO wz_types;
-WHILE NO_DATA != 2 DO
-  IF NO_DATA = 1 then
+      SET @SWV_Error = 30103;
+      SET SWP_Ret_Value = -1;
+      LEAVE SWL_return;
+    end if;
+    if out_flag=2 THEN
+      select '7==loop cursor read_seattypes',rz_types,wz_types;
+    end if;
+    IF wz_types IS NOT NULL then
+      SET rz_types = CONCAT(rz_types,wz_types);
+    end if;
+    SET NO_DATA = 0;
+    FETCH read_seattypes INTO wz_types;
+  END WHILE;
+  CLOSE read_seattypes;
 
-    SET @SWV_Error = 30104;
-    SET SWP_Ret_Value = -1;
+  SET rw_types = '';
+  SET pTypes = '46';
+  SET @SWV_Error = 0;
+  OPEN read_seattypes;
+  IF @SWV_Error != 0 then
     LEAVE SWL_return;
-  end if;
-  if out_flag=2 THEN
-    select '8==loop cursor read_seattypes',rw_types,wz_types;
-  end if;
-  IF wz_types IS NOT NULL then
-    SET rw_types = CONCAT(rw_types,wz_types);
   end if;
   SET NO_DATA = 0;
   FETCH read_seattypes INTO wz_types;
-END WHILE;
-CLOSE read_seattypes;
+  WHILE NO_DATA != 2 DO
+    IF NO_DATA = 1 then
+
+      SET @SWV_Error = 30104;
+      SET SWP_Ret_Value = -1;
+      LEAVE SWL_return;
+    end if;
+    if out_flag=2 THEN
+      select '8==loop cursor read_seattypes',rw_types,wz_types;
+    end if;
+    IF wz_types IS NOT NULL then
+      SET rw_types = CONCAT(rw_types,wz_types);
+    end if;
+    SET NO_DATA = 0;
+    FETCH read_seattypes INTO wz_types;
+  END WHILE;
+  CLOSE read_seattypes;
 
 
-SET wz_types = 'W';
-
-
-
-CREATE TEMPORARY TABLE IF not EXISTS wjk_tt_tmp_stop_time
-(
-  tmp_train_no CHAR(12) NOT NULL,
-  tmp_station_no CHAR(2) NOT NULL,
-  tmp_start_date CHAR(12) NOT NULL,
-  tmp_stop_date CHAR(12) NOT NULL,
-  tmp_arrive_time CHAR(4) NOT NULL,
-  tmp_start_time CHAR(4) NOT NULL,
-  tmp_station_telecode CHAR(3) NOT NULL,
-  tmp_station_train_code CHAR(8) NOT NULL,
-  tmp_day_difference SMALLINT,
-  tmp_start_station_name CHAR(10),
-  tmp_end_station_name CHAR(10),
-  tmp_count SMALLINT,
-  unique index tt_tmp_stop_time_idx (tmp_train_no)
-);
-truncate table wjk_tt_tmp_stop_time;
+  SET wz_types = 'W';
 
 
 
-
-CREATE TEMPORARY TABLE IF not EXISTS wjk_tt_tmp_stoptime
-(
-  tmp_train_no CHAR(12) NOT NULL,
-  tmp_station_no CHAR(2) NOT NULL,
-  tmp_start_date CHAR(12) NOT NULL,
-  tmp_stop_date CHAR(12) NOT NULL,
-  tmp_arrive_time CHAR(4) NOT NULL,
-  tmp_start_time CHAR(4) NOT NULL,
-  tmp_station_telecode CHAR(3) NOT NULL,
-  tmp_station_train_code CHAR(8) NOT NULL,
-  tmp_day_difference SMALLINT,
-  tmp_start_station_name CHAR(10),
-  tmp_end_station_name CHAR(10),
-  tmp_count SMALLINT,
-  unique index tt_tmp_stop_time_idx1 (tmp_train_no)
-);
-truncate table wjk_tt_tmp_stoptime;
-
-
-
-
-CREATE TEMPORARY TABLE IF not EXISTS wjk_tt_tmp_center_notice
-AS
-SELECT 	CJ30_center_notice.operate_time,
-CJ30_center_notice.start_date,
-CJ30_center_notice.stop_date,
-CJ30_center_notice.train_no,
-CJ30_center_notice.station_no,
-CJ30_center_notice.station_telecode,
-CJ30_center_notice.station_name,
-CJ30_center_notice.board_train_code,
-CJ30_center_notice.command_code,
-CJ30_center_notice.day_difference,
-CJ30_center_notice.arrive_time,
-CJ30_center_notice.start_time,
-CJ30_center_notice.time_interval,
-CJ30_center_notice.running_style,
-CJ30_center_notice.running_rule
-FROM basic.CJ30_center_notice  WHERE 1 = 2;
-
-truncate table wjk_tt_tmp_center_notice;
-
-
-SET c_today = DATE_FORMAT(CURRENT_TIMESTAMP,'%Y%m%d');
-SET c_date = DATE_FORMAT(now(),'%H%i');
-SET c_date1 = left(c_date,2);
-SET c_date2 = right(c_date,2);
-SET c_current_date = CONCAT(c_date1,c_date2);
-SET c_tmp_date = DATE_FORMAT(TIMESTAMPADD(day,(oi_train_days_in -1),c_today),'%Y%m%d');
-SET temp_date = DATE_FORMAT(CURRENT_TIMESTAMP,'%Y%m%d');
-
-insert into wjk_tt_tmp_center_notice
-select CJ30_center_notice.operate_time,
-CJ30_center_notice.start_date,
-CJ30_center_notice.stop_date,
-CJ30_center_notice.train_no,
-CJ30_center_notice.station_no,
-CJ30_center_notice.station_telecode,
-CJ30_center_notice.station_name,
-CJ30_center_notice.board_train_code,
-CJ30_center_notice.command_code,
-CJ30_center_notice.day_difference,
-CJ30_center_notice.arrive_time,
-CJ30_center_notice.start_time,
-CJ30_center_notice.time_interval,
-CJ30_center_notice.running_style,
-CJ30_center_notice.running_rule
-from basic.CJ30_center_notice
-where LOCATE(CJ30_center_notice.station_telecode,assign_station_in) > 0
-and CJ30_center_notice.stop_date >= c_today
-and CJ30_center_notice.start_date <= c_tmp_date
-and CJ30_center_notice.command_enable = 0
-and LOCATE(CJ30_center_notice.command_code,'P') > 0;
-
-
-if out_flag=2 then
-  select '9=== is here';
-end if;
-
-SET tmp_no = 1;
-
-WHILE tmp_no <= LENGTH(assign_station_in)/3 DO
-  SET single_assign_station = SUBSTRING(assign_station_in,3*tmp_no -2,3);
-  select   station_dictionary.station_name,
-  station_dictionary.bureau_code
-  INTO assign_station_name,
-  my_bureau_code
-  from basic.station_dictionary
-  where station_dictionary.station_telecode = single_assign_station;
-
+  CREATE TEMPORARY TABLE IF not EXISTS wjk_tt_tmp_stop_time
+  (
+    tmp_train_no CHAR(12) NOT NULL,
+    tmp_station_no CHAR(2) NOT NULL,
+    tmp_start_date CHAR(12) NOT NULL,
+    tmp_stop_date CHAR(12) NOT NULL,
+    tmp_arrive_time CHAR(4) NOT NULL,
+    tmp_start_time CHAR(4) NOT NULL,
+    tmp_station_telecode CHAR(3) NOT NULL,
+    tmp_station_train_code CHAR(8) NOT NULL,
+    tmp_day_difference SMALLINT,
+    tmp_start_station_name CHAR(10),
+    tmp_end_station_name CHAR(10),
+    tmp_count SMALLINT,
+    unique index tt_tmp_stop_time_idx (tmp_train_no)
+  );
   truncate table wjk_tt_tmp_stop_time;
-  if plan_train_no_in = '%' then
 
-    insert into wjk_tt_tmp_stop_time
-    select distinct stop_time.train_no,
-    stop_time.station_no,
-    stop_time.start_date,
-    stop_time.stop_date,
-    stop_time.arrive_time,
-    stop_time.start_time,
-    stop_time.station_telecode,
-    stop_time.station_train_code,
-    stop_time.day_difference,
-    '',
-    '',
-    0
-    from basic.stop_time
-    where stop_time.station_telecode = single_assign_station
-    and stop_time.station_name NOT REGEXP '[\\_|\\*|-].*'
 
-    AND stop_time.stop_date >= DATE_FORMAT(TIMESTAMPADD(DAY,0 -cast(day_difference as signed),c_today),'%Y%m%d')
-    AND	stop_time.train_no not in(select CONCAT(train_dir.subbureau_code,right(CONCAT("00000000",rtrim(train_dir.train_code)),8),train_dir.double_id,train_dir.schema_id)
-      from basic.train_dir
-      where train_dir.end_station_name = assign_station_name
 
-    );
-    if out_flag=2 then
-      select '22_1====select * from wjk_tt_tmp_stop_time limit 10';
-      select * from wjk_tt_tmp_stop_time ;
-    end if;
-  else
-    insert into wjk_tt_tmp_stop_time
-    select distinct stop_time.train_no,
-    stop_time.station_no,
-    stop_time.start_date,
-    stop_time.stop_date,
-    stop_time.arrive_time,
-    stop_time.start_time,
-    stop_time.station_telecode,
-    stop_time.station_train_code,
-    stop_time.day_difference,
-    '',
-    '',
-    0
-    from basic.stop_time
-    where stop_time.train_no = plan_train_no_in
-    and stop_time.station_telecode = single_assign_station
-    and stop_time.station_name NOT REGEXP '[\\_|\\*|-].*'
 
-    AND stop_time.stop_date >= DATE_FORMAT(TIMESTAMPADD(DAY,0 -cast(day_difference as signed),c_today),'%Y%m%d')
-    AND	stop_time.train_no not in(select CONCAT(train_dir.subbureau_code,right(CONCAT("00000000",rtrim(train_dir.train_code)),8),train_dir.double_id,train_dir.schema_id)
-      from basic.train_dir where train_dir.end_station_name = assign_station_name
+  CREATE TEMPORARY TABLE IF not EXISTS wjk_tt_tmp_stoptime
+  (
+    tmp_train_no CHAR(12) NOT NULL,
+    tmp_station_no CHAR(2) NOT NULL,
+    tmp_start_date CHAR(12) NOT NULL,
+    tmp_stop_date CHAR(12) NOT NULL,
+    tmp_arrive_time CHAR(4) NOT NULL,
+    tmp_start_time CHAR(4) NOT NULL,
+    tmp_station_telecode CHAR(3) NOT NULL,
+    tmp_station_train_code CHAR(8) NOT NULL,
+    tmp_day_difference SMALLINT,
+    tmp_start_station_name CHAR(10),
+    tmp_end_station_name CHAR(10),
+    tmp_count SMALLINT,
+    unique index tt_tmp_stop_time_idx1 (tmp_train_no)
+  );
+  truncate table wjk_tt_tmp_stoptime;
 
-    );
-    if out_flag=2 then
-      select '22_2====select * from wjk_tt_tmp_stop_time limit 10';
 
-    end if;
+
+
+  CREATE TEMPORARY TABLE IF not EXISTS wjk_tt_tmp_center_notice
+  AS
+  SELECT 	CJ30_center_notice.operate_time,
+  CJ30_center_notice.start_date,
+  CJ30_center_notice.stop_date,
+  CJ30_center_notice.train_no,
+  CJ30_center_notice.station_no,
+  CJ30_center_notice.station_telecode,
+  CJ30_center_notice.station_name,
+  CJ30_center_notice.board_train_code,
+  CJ30_center_notice.command_code,
+  CJ30_center_notice.day_difference,
+  CJ30_center_notice.arrive_time,
+  CJ30_center_notice.start_time,
+  CJ30_center_notice.time_interval,
+  CJ30_center_notice.running_style,
+  CJ30_center_notice.running_rule
+  FROM basic.CJ30_center_notice  WHERE 1 = 2;
+
+  truncate table wjk_tt_tmp_center_notice;
+
+
+  SET c_today = DATE_FORMAT(CURRENT_TIMESTAMP,'%Y%m%d');
+  SET c_date = DATE_FORMAT(now(),'%H%i');
+  SET c_date1 = left(c_date,2);
+  SET c_date2 = right(c_date,2);
+  SET c_current_date = CONCAT(c_date1,c_date2);
+  SET c_tmp_date = DATE_FORMAT(TIMESTAMPADD(day,(oi_train_days_in -1),c_today),'%Y%m%d');
+  SET temp_date = DATE_FORMAT(CURRENT_TIMESTAMP,'%Y%m%d');
+
+  insert into wjk_tt_tmp_center_notice
+  select CJ30_center_notice.operate_time,
+  CJ30_center_notice.start_date,
+  CJ30_center_notice.stop_date,
+  CJ30_center_notice.train_no,
+  CJ30_center_notice.station_no,
+  CJ30_center_notice.station_telecode,
+  CJ30_center_notice.station_name,
+  CJ30_center_notice.board_train_code,
+  CJ30_center_notice.command_code,
+  CJ30_center_notice.day_difference,
+  CJ30_center_notice.arrive_time,
+  CJ30_center_notice.start_time,
+  CJ30_center_notice.time_interval,
+  CJ30_center_notice.running_style,
+  CJ30_center_notice.running_rule
+  from basic.CJ30_center_notice
+  where LOCATE(CJ30_center_notice.station_telecode,assign_station_in) > 0
+  and CJ30_center_notice.stop_date >= c_today
+  and CJ30_center_notice.start_date <= c_tmp_date
+  and CJ30_center_notice.command_enable = 0
+  and LOCATE(CJ30_center_notice.command_code,'P') > 0;
+
+
+  if out_flag=2 then
+    select '9=== is here';
   end if;
-  SET ns_train_code = SUBSTRING(ns_train_no,3,8);
-  WHILE LOCATE('0',ns_train_code) = 1 DO
-    SET SWV_ns_train_code_Str = SUBSTRING(ns_train_code,2,8);
-    SET ns_train_code = SWV_ns_train_code_Str;
+
+  SET tmp_no = 1;
+
+  WHILE tmp_no <= LENGTH(assign_station_in)/3 DO
+    SET single_assign_station = SUBSTRING(assign_station_in,3*tmp_no -2,3);
+    select   station_dictionary.station_name,
+    station_dictionary.bureau_code
+    INTO assign_station_name,
+    my_bureau_code
+    from basic.station_dictionary
+    where station_dictionary.station_telecode = single_assign_station;
+
+    truncate table wjk_tt_tmp_stop_time;
+    if plan_train_no_in = '%' then
+
+      insert into wjk_tt_tmp_stop_time
+      select distinct stop_time.train_no,
+      stop_time.station_no,
+      stop_time.start_date,
+      stop_time.stop_date,
+      stop_time.arrive_time,
+      stop_time.start_time,
+      stop_time.station_telecode,
+      stop_time.station_train_code,
+      stop_time.day_difference,
+      '',
+      '',
+      0
+      from basic.stop_time
+      where stop_time.station_telecode = single_assign_station
+      and stop_time.station_name NOT REGEXP '[\\_|\\*|-].*'
+
+      AND stop_time.stop_date >= DATE_FORMAT(TIMESTAMPADD(DAY,0 -cast(day_difference as signed),c_today),'%Y%m%d')
+      AND	stop_time.train_no not in(select CONCAT(train_dir.subbureau_code,right(CONCAT("00000000",rtrim(train_dir.train_code)),8),train_dir.double_id,train_dir.schema_id)
+        from basic.train_dir
+        where train_dir.end_station_name = assign_station_name
+
+      );
+      if out_flag=2 then
+        select '22_1====select * from wjk_tt_tmp_stop_time limit 10';
+        select * from wjk_tt_tmp_stop_time ;
+      end if;
+    else
+      insert into wjk_tt_tmp_stop_time
+      select distinct stop_time.train_no,
+      stop_time.station_no,
+      stop_time.start_date,
+      stop_time.stop_date,
+      stop_time.arrive_time,
+      stop_time.start_time,
+      stop_time.station_telecode,
+      stop_time.station_train_code,
+      stop_time.day_difference,
+      '',
+      '',
+      0
+      from basic.stop_time
+      where stop_time.train_no = plan_train_no_in
+      and stop_time.station_telecode = single_assign_station
+      and stop_time.station_name NOT REGEXP '[\\_|\\*|-].*'
+
+      AND stop_time.stop_date >= DATE_FORMAT(TIMESTAMPADD(DAY,0 -cast(day_difference as signed),c_today),'%Y%m%d')
+      AND	stop_time.train_no not in(select CONCAT(train_dir.subbureau_code,right(CONCAT("00000000",rtrim(train_dir.train_code)),8),train_dir.double_id,train_dir.schema_id)
+        from basic.train_dir where train_dir.end_station_name = assign_station_name
+
+      );
+      if out_flag=2 then
+        select '22_2====select * from wjk_tt_tmp_stop_time limit 10';
+
+      end if;
+    end if;
+    SET ns_train_code = SUBSTRING(ns_train_no,3,8);
+    WHILE LOCATE('0',ns_train_code) = 1 DO
+      SET SWV_ns_train_code_Str = SUBSTRING(ns_train_code,2,8);
+      SET ns_train_code = SWV_ns_train_code_Str;
     END WHILE;
     select   station_dictionary.bureau_code
     INTO bureau_code
@@ -807,36 +807,36 @@ WHILE tmp_no <= LENGTH(assign_station_in)/3 DO
       WHEN SUBSTRING(wjk_tt_train_info.train_no,3,2) = '00' 	THEN SUBSTRING(wjk_tt_train_info.train_no,5,6)
       WHEN SUBSTRING(wjk_tt_train_info.train_no,3,1) = '0' 		THEN SUBSTRING(wjk_tt_train_info.train_no,4,7)
       ELSE wjk_tt_train_info.train_no
-                      END);
+                    END);
 
-                    begin
-                      declare cp_start_time datetime;
-                      declare cp_end_time datetime;
-                      if out_flag=2  then
-
-
-
-                        select concat('1====call arith.DS60_ticket_left(wjk_tt_train_info,\'',os_purposes_in,'\',\'',single_assign_station,'\',4,\'A\',\'wjk_tt_tmp_left_base_center\',0,1,1,@return_out);');
-                        select * from wjk_tt_train_info;
-
-                        set cp_start_time=now();
-                      end if;
-                      CALL arith.DS60_ticket_left('wjk_tt_train_info',
-                        os_purposes_in,
-                        single_assign_station,
-                        4,
-                        'A',
-                        'wjk_tt_tmp_left_base_center',
-                        0,
-                        1,
-                        1,
-                        return_out);
-                      if out_flag=2 and  ni_day<5 then
+                  begin
+                    declare cp_start_time datetime;
+                    declare cp_end_time datetime;
+                    if out_flag=2  then
 
 
-                        select '1===end call arith.DS60_ticket_left finish,execute time:',TIMESTAMPDIFF(second,cp_start_time,cp_end_time);
 
+                      select concat('1====call arith.DS60_ticket_left(wjk_tt_train_info,\'',os_purposes_in,'\',\'',single_assign_station,'\',4,\'A\',\'wjk_tt_tmp_left_base_center\',0,1,1,@return_out);');
+                      select * from wjk_tt_train_info;
+
+                      set cp_start_time=now();
                     end if;
+                    CALL arith.DS60_ticket_left('wjk_tt_train_info',
+                      os_purposes_in,
+                      single_assign_station,
+                      4,
+                      'A',
+                      'wjk_tt_tmp_left_base_center',
+                      0,
+                      1,
+                      1,
+                      return_out);
+                    if out_flag=2 and  ni_day<5 then
+
+
+                      select '1===end call arith.DS60_ticket_left finish,execute time:',TIMESTAMPDIFF(second,cp_start_time,cp_end_time);
+
+                  end if;
               end ;
               SET ni_day = ni_day+1;
     END WHILE;
@@ -927,660 +927,630 @@ WHILE tmp_no <= LENGTH(assign_station_in)/3 DO
                 WHILE LOCATE('0',ns_train_code) = 1 DO
                   SET SWV_ns_train_code_Str = SUBSTRING(ns_train_code,2,8);
                   SET ns_train_code = SWV_ns_train_code_Str;
-              END WHILE;
-              SET i = -1;
-              SET j = 1;
-              select   count(*)
-              INTO seat_type_count
-              from wjk_tt_tmp_seat_type_tmp;
+                END WHILE;
+                SET i = -1;
+                SET j = 1;
+                select   count(*)
+                INTO seat_type_count
+                from wjk_tt_tmp_seat_type_tmp;
 
-              select   train_dir.seat_types
-              INTO seat_types
-              from basic.train_dir
-              where train_dir.subbureau_code = SUBSTRING(ns_train_no,1,2)
-              and train_dir.train_code = ns_train_code
-              and train_dir.double_id = SUBSTRING(ns_train_no,11,1)
-              and train_dir.schema_id = SUBSTRING(ns_train_no,12,1);
-              SET yz_yn = 'n';
-              SET rz_yn = 'n';
-              SET yw_yn = 'n';
-              SET rw_yn = 'n';
-              SET wz_yn = 'n';
+                select   train_dir.seat_types
+                INTO seat_types
+                from basic.train_dir
+                where train_dir.subbureau_code = SUBSTRING(ns_train_no,1,2)
+                and train_dir.train_code = ns_train_code
+                and train_dir.double_id = SUBSTRING(ns_train_no,11,1)
+                and train_dir.schema_id = SUBSTRING(ns_train_no,12,1);
+                SET yz_yn = 'n';
+                SET rz_yn = 'n';
+                SET yw_yn = 'n';
+                SET rw_yn = 'n';
+                SET wz_yn = 'n';
 
-              SET seat_type_string = '';
-              SET seat_type = '';
+                SET seat_type_string = '';
+                SET seat_type = '';
 
-              SWL_Label13:
-              while i < seat_type_count DO
+                SWL_Label13:
+                while i < seat_type_count DO
 
-                SET i = i+1;
-                SET j = j*2;
-                if i = 0 then
-                  SET j = 1;
-                end if;
-                if(seat_types & j) = 0 then
-                  ITERATE SWL_Label13;
-                end if;
-                if i = 23 then
-                  SET i = 24;
-                end if;
-                if i < 10 then
-                  SET seat_type = CAST(i AS char(1));
-                else
-                  SET seat_type = char(i+55);
-                end if;
-                SET seat_type_string = CONCAT(seat_type_string,seat_type);
+                  SET i = i+1;
+                  SET j = j*2;
+                  if i = 0 then
+                    SET j = 1;
+                  end if;
+                  if(seat_types & j) = 0 then
+                    ITERATE SWL_Label13;
+                  end if;
+                  if i = 23 then
+                    SET i = 24;
+                  end if;
+                  if i < 10 then
+                    SET seat_type = CAST(i AS char(1));
+                  else
+                    SET seat_type = char(i+55);
+                  end if;
+                  SET seat_type_string = CONCAT(seat_type_string,seat_type);
 
-                select   wjk_tt_tmp_seat_type_tmp.belong_seat_type_code,
-                wjk_tt_tmp_seat_type_tmp.seat_type_name
-                INTO seat_type_belong,
-                seat_name
-                from wjk_tt_tmp_seat_type_tmp
-                where wjk_tt_tmp_seat_type_tmp.seat_type_code = seat_type;
+                  select   wjk_tt_tmp_seat_type_tmp.belong_seat_type_code,
+                  wjk_tt_tmp_seat_type_tmp.seat_type_name
+                  INTO seat_type_belong,
+                  seat_name
+                  from wjk_tt_tmp_seat_type_tmp
+                  where wjk_tt_tmp_seat_type_tmp.seat_type_code = seat_type;
 
-                if (seat_type_belong in('1')) then
-                  SET yz_yn = 'y';
-                end if;
-                if (seat_type_belong in('2')) then
-                  SET rz_yn = 'y';
-                end if;
-                if (seat_type_belong in('3','5')) then
-                  SET yw_yn = 'y';
-                end if;
-                if (seat_type_belong in('4','6')) then
-                  SET rw_yn = 'y';
-                end if;
-                if (wz_types = 'W') then
-                  SET wz_yn = 'y';
-                end if;
-            END WHILE SWL_Label13;
+                  if (seat_type_belong in('1')) then
+                    SET yz_yn = 'y';
+                  end if;
+                  if (seat_type_belong in('2')) then
+                    SET rz_yn = 'y';
+                  end if;
+                  if (seat_type_belong in('3','5')) then
+                    SET yw_yn = 'y';
+                  end if;
+                  if (seat_type_belong in('4','6')) then
+                    SET rw_yn = 'y';
+                  end if;
+                  if (wz_types = 'W') then
+                    SET wz_yn = 'y';
+                  end if;
+                END WHILE SWL_Label13;
 
 
-            select   station_dictionary.station_name
-            INTO c_station_name
-            from basic.station_dictionary
-            where station_dictionary.station_telecode = ns_station_telecode;
+                select   station_dictionary.station_name
+                INTO c_station_name
+                from basic.station_dictionary
+                where station_dictionary.station_telecode = ns_station_telecode;
 
-            SET c1_station_name = c_station_name;
-            SET c_station_name = CONCAT(ltrim(rtrim(c_station_name)),"Õ¾");
+                SET c1_station_name = c_station_name;
+                SET c_station_name = CONCAT(ltrim(rtrim(c_station_name)),"Õ¾");
 
-            select distinct  CG40_station_group_train.direction_code
-            INTO ns_direction_code
-            from basic.CG40_station_group_train
-            where CG40_station_group_train.train_code = ns_train_code
-            and ( (CG40_station_group_train.station_name = c_station_name) or (CG40_station_group_train.station_name = c1_station_name));
+                select distinct  CG40_station_group_train.direction_code
+                INTO ns_direction_code
+                from basic.CG40_station_group_train
+                where CG40_station_group_train.train_code = ns_train_code
+                and ( (CG40_station_group_train.station_name = c_station_name) or (CG40_station_group_train.station_name = c1_station_name));
 
-            IF @SWV_Error != 0 then
-              LEAVE SWL_return;
-            end if;
-            if ns_direction_code IS NULL then
-              SET ns_direction_name = " ";
-            else
-
-              select   direction.direction_name
-              INTO ns_direction_name
-              from center.direction
-              where direction.inner_code = ns_station_telecode
-              and direction.direction_code = ns_direction_code;
-
-              if @SWV_Error != 0 then
-                LEAVE SWL_return;
-              end if;
-              if ns_direction_name IS NULL then
-                SET ns_direction_name = " ";
-              end if;
-            end if;
-            if exists(select 1 from wjk_tt_tmp_center_notice
-              where wjk_tt_tmp_center_notice.start_date <= ns_train_date
-              and wjk_tt_tmp_center_notice.stop_date >= ns_train_date
-              and wjk_tt_tmp_center_notice.station_telecode = single_assign_station
-              and wjk_tt_tmp_center_notice.train_no = ns_train_no)
-              then
-
-              open cur_notice;
-              SET NO_DATA = 0;
-              fetch cur_notice into nc_operate_time,nc_start_date,nc_stop_date,nc_train_no,nc_station_no,nc_station_telecode,
-              nc_station_name,nc_board_train_code,nc_command_code,
-              nc_day_difference,nc_arrive_time,nc_start_time,nc_time_interval,nc_running_style,
-              nc_running_rule;
-              while NO_DATA != 2 DO
-                if NO_DATA = 1 then
-
-                  SET @SWV_Error = 30111;
-                  SET SWP_Ret_Value = -1;
+                IF @SWV_Error != 0 then
                   LEAVE SWL_return;
                 end if;
-                if out_flag=2 then
-                  select '16====open cursor ',nc_operate_time,nc_start_date,nc_stop_date,nc_train_no,nc_station_no,nc_station_telecode,
+                if ns_direction_code IS NULL then
+                  SET ns_direction_name = " ";
+                else
+
+                  select   direction.direction_name
+                  INTO ns_direction_name
+                  from center.direction
+                  where direction.inner_code = ns_station_telecode
+                  and direction.direction_code = ns_direction_code;
+
+                  if @SWV_Error != 0 then
+                    LEAVE SWL_return;
+                  end if;
+                  if ns_direction_name IS NULL then
+                    SET ns_direction_name = " ";
+                  end if;
+                end if;
+                if exists(select 1 from wjk_tt_tmp_center_notice
+                  where wjk_tt_tmp_center_notice.start_date <= ns_train_date
+                  and wjk_tt_tmp_center_notice.stop_date >= ns_train_date
+                  and wjk_tt_tmp_center_notice.station_telecode = single_assign_station
+                  and wjk_tt_tmp_center_notice.train_no = ns_train_no)
+                  then
+
+                  open cur_notice;
+                  SET NO_DATA = 0;
+                  fetch cur_notice into nc_operate_time,nc_start_date,nc_stop_date,nc_train_no,nc_station_no,nc_station_telecode,
                   nc_station_name,nc_board_train_code,nc_command_code,
                   nc_day_difference,nc_arrive_time,nc_start_time,nc_time_interval,nc_running_style,
                   nc_running_rule;
+                  while NO_DATA != 2 DO
+                    if NO_DATA = 1 then
+
+                      SET @SWV_Error = 30111;
+                      SET SWP_Ret_Value = -1;
+                      LEAVE SWL_return;
+                    end if;
+                    if out_flag=2 then
+                      select '16====open cursor ',nc_operate_time,nc_start_date,nc_stop_date,nc_train_no,nc_station_no,nc_station_telecode,
+                      nc_station_name,nc_board_train_code,nc_command_code,
+                      nc_day_difference,nc_arrive_time,nc_start_time,nc_time_interval,nc_running_style,
+                      nc_running_rule;
+                    end if;
+                    call arith.CJ30_check_running(ns_train_date,'0',0,single_assign_station,ns_train_date,ns_train_date,
+                      nc_running_style,nc_running_rule,0,0,return_out);
+                    SET ret_code = return_out;
+                    IF ret_code > 0 then
+                      SET ns_start_time = nc_start_time;
+                    end if;
+                    SET NO_DATA = 0;
+                    fetch cur_notice into nc_operate_time,nc_start_date,nc_stop_date,nc_train_no,nc_station_no,nc_station_telecode,
+                    nc_station_name,nc_board_train_code,nc_command_code,
+                    nc_day_difference,nc_arrive_time,nc_start_time,nc_time_interval,nc_running_style,
+                    nc_running_rule;
+                  END WHILE;
+                  close cur_notice;
                 end if;
-                call arith.CJ30_check_running(ns_train_date,'0',0,single_assign_station,ns_train_date,ns_train_date,
-                  nc_running_style,nc_running_rule,0,0,return_out);
-                SET ret_code = return_out;
-                IF ret_code > 0 then
-                  SET ns_start_time = nc_start_time;
+                SET ns_limit_station_no = '00';
+                SET ns_limit_station_name = ns_end_station_name;
+
+
+
+                select   stop_time.day_difference
+                INTO from_day_diff
+                from basic.stop_time
+                where stop_time.train_no = ns_train_no
+                and stop_time.station_telecode = single_assign_station;
+                SET depart_date = DATE_FORMAT(TIMESTAMPADD(DAY,0 -from_day_diff,ns_train_date),'%Y%m%d');
+                if out_flag=2 then
+                  select '15_4====',ns_train_code,ns_start_station_name,ns_end_station_name,depart_date;
                 end if;
-                SET NO_DATA = 0;
-                fetch cur_notice into nc_operate_time,nc_start_date,nc_stop_date,nc_train_no,nc_station_no,nc_station_telecode,
-                nc_station_name,nc_board_train_code,nc_command_code,
-                nc_day_difference,nc_arrive_time,nc_start_time,nc_time_interval,nc_running_style,
-                nc_running_rule;
-            END WHILE;
-            close cur_notice;
-          end if;
-          SET ns_limit_station_no = '00';
-          SET ns_limit_station_name = ns_end_station_name;
+                begin
+                  declare tmp_row_count int;
+                  select  count(*)-1 INTO tmp_row_count
+                  from basic.train_dir
+                  where train_dir.train_code = ns_train_code
+                  and train_dir.start_station_name = ns_start_station_name
+                  and train_dir.end_station_name = ns_end_station_name
+                  and train_dir.stop_date >= depart_date
+                  and train_dir.start_date <= depart_date;
+                  select   CONCAT(train_dir.subbureau_code,lpad(rtrim(train_dir.train_code),8,'0'),train_dir.double_id,train_dir.schema_id)
+                  INTO train_no
+                  from basic.train_dir
+                  where train_dir.train_code = ns_train_code
+                  and train_dir.start_station_name = ns_start_station_name
+                  and train_dir.end_station_name = ns_end_station_name
+                  and train_dir.stop_date >= depart_date
+                  and train_dir.start_date <= depart_date limit tmp_row_count, 1;
+                end;
+
+                select   station_dictionary.station_telecode
+                INTO end_station_telecode
+                from basic.station_dictionary
+                where station_dictionary.station_name = ns_end_station_name;
+
+                SET c_train_no = ns_train_code;
+                SET return_code = 0;
+                if out_flag=2 then
+                  select '17_1====call arith.CJ30_train_code',ns_train_date,c_train_no,single_assign_station,out_flag;
+                end if;
+                begin
+                  declare oo_single_assign_station varchar(20);
+                  set oo_single_assign_station = single_assign_station;
+                  CALL arith.CJ30_train_code(ns_train_date,c_train_no,oo_single_assign_station,out_flag,'',return_out);
+                end;
+                if out_flag=2 then
+                  select '17_2===end call arith.CJ30_train_code',ns_train_date,c_train_no,single_assign_station,out_flag;
+                end if;
+                if c_train_no <> '000000000000' then
+
+                  select   max(stop_time.station_no)
+                  INTO ll_max_station_no
+                  from basic.stop_time
+                  where stop_time.train_no = c_train_no;
+
+                  select   stop_time.station_telecode
+                  INTO ll_end_station_telecode
+                  from basic.stop_time
+                  where stop_time.train_no = c_train_no
+                  and stop_time.station_no = ll_max_station_no;
+
+                  if ll_end_station_telecode <> end_station_telecode then
+                    SET c_train_no = '000000000000';
+                  end if;
+                end if;
+
+                if c_train_no = '000000000000' or c_train_no <> train_no then
+
+                  SET c_train_no = '000000000000';
+                end if;
 
 
 
-          select   stop_time.day_difference
-          INTO from_day_diff
-          from basic.stop_time
-          where stop_time.train_no = ns_train_no
-          and stop_time.station_telecode = single_assign_station;
-          SET depart_date = DATE_FORMAT(TIMESTAMPADD(DAY,0 -from_day_diff,ns_train_date),'%Y%m%d');
-          if out_flag=2 then
-            select '15_4====',ns_train_code,ns_start_station_name,ns_end_station_name,depart_date;
-          end if;
-          begin
-            declare tmp_row_count int;
-            select  count(*)-1 INTO tmp_row_count
-            from basic.train_dir
-            where train_dir.train_code = ns_train_code
-            and train_dir.start_station_name = ns_start_station_name
-            and train_dir.end_station_name = ns_end_station_name
-            and train_dir.stop_date >= depart_date
-            and train_dir.start_date <= depart_date;
-            select   CONCAT(train_dir.subbureau_code,lpad(rtrim(train_dir.train_code),8,'0'),train_dir.double_id,train_dir.schema_id)
-            INTO train_no
-            from basic.train_dir
-            where train_dir.train_code = ns_train_code
-            and train_dir.start_station_name = ns_start_station_name
-            and train_dir.end_station_name = ns_end_station_name
-            and train_dir.stop_date >= depart_date
-            and train_dir.start_date <= depart_date limit tmp_row_count, 1;
-          end;
+                if c_train_no = '000000000000' then
 
-          select   station_dictionary.station_telecode
-          INTO end_station_telecode
-          from basic.station_dictionary
-          where station_dictionary.station_name = ns_end_station_name;
+                  SET yz_count = -1;
+                  SET yw_count = -1;
+                  SET rz_count = -1;
+                  SET rw_count = -1;
+                  SET wz_count = -1;
+                  LEAVE step_two;
+                else
+                  if ns_train_date = c_today and ns_start_time < c_current_date then
 
-          SET c_train_no = ns_train_code;
-          SET return_code = 0;
-          if out_flag=2 then
-            select '17_1====call arith.CJ30_train_code',ns_train_date,c_train_no,single_assign_station,out_flag;
-          end if;
-          begin
-            declare oo_single_assign_station varchar(20);
-            set oo_single_assign_station = single_assign_station;
-            CALL arith.CJ30_train_code(ns_train_date,c_train_no,oo_single_assign_station,out_flag,'',return_out);
-          end;
-          if out_flag=2 then
-            select '17_2===end call arith.CJ30_train_code',ns_train_date,c_train_no,single_assign_station,out_flag;
-      end if;
-      if c_train_no <> '000000000000' then
+                    SET yz_count = -2;
+                    SET yw_count = -2;
+                    SET rz_count = -2;
+                    SET rw_count = -2;
+                    SET wz_count = -2;
+                    LEAVE step_one;
+                  end if;
+                end if;
+                if flag_in in(0,2) then
 
-        select   max(stop_time.station_no)
-        INTO ll_max_station_no
-        from basic.stop_time
-        where stop_time.train_no = c_train_no;
+                  select   max(stop_time.station_no)
+                  INTO ns_limit_station_no
+                  from basic.stop_time
+                  where stop_time.train_no = ns_train_no;
 
-        select   stop_time.station_telecode
-        INTO ll_end_station_telecode
-        from basic.stop_time
-        where stop_time.train_no = c_train_no
-        and stop_time.station_no = ll_max_station_no;
+                  if @SWV_Error != 0 then
+                    LEAVE SWL_return;
+                  end if;
+                  if ns_limit_station_no IS NULL then
+                    SET ns_limit_station_no = '00';
+                  end if;
+                  SET ns_limit_station_name = ns_end_station_name;
+                  if (yz_yn = 'n') then
+                    SET yz_count = -3;
+                  else
+                    select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
+                    INTO yz_count
+                    from wjk_tt_tmp_left_base_center
+                    where wjk_tt_tmp_left_base_center.train_no = ns_train_no
+                    and wjk_tt_tmp_left_base_center.train_date = ns_train_date
+                    and wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
+                    and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,yz_types) > 0;
+                    if @SWV_Error != 0 then
+                      LEAVE SWL_return;
+                    end if;
+                    if (yz_count IS NULL or yz_count <= 0) then
+                      SET yz_count = 0;
+                    end if;
+                  end if;
+                  if (yw_yn = 'n') then
+                    SET yw_count = -3;
+                  else
+                    select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
+                    INTO yw_count
+                    from wjk_tt_tmp_left_base_center
+                    where wjk_tt_tmp_left_base_center.train_no = ns_train_no
+                    and wjk_tt_tmp_left_base_center.train_date = ns_train_date
+                    and wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
+                    and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,yw_types) > 0;
+                    if @SWV_Error != 0 then
+                      LEAVE SWL_return;
+                    end if;
+                    if (yw_count IS NULL or yw_count <= 0) then
+                      SET yw_count = 0;
+                    end if;
+                  end if;
+                  if (rz_yn = 'n') then
+                    SET rz_count = -3;
+                  else
+                    select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
+                    INTO rz_count
+                    from wjk_tt_tmp_left_base_center
+                    where wjk_tt_tmp_left_base_center.train_no = ns_train_no
+                    and wjk_tt_tmp_left_base_center.train_date = ns_train_date
+                    and  wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
+                    and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,rz_types) > 0;
+                    if @SWV_Error != 0 then
+                      LEAVE SWL_return;
+                    end if;
+                    if (rz_count IS NULL or rz_count <= 0) then
+                      SET rz_count = 0;
+                    end if;
+                  end if;
+                  if (rw_yn = 'n') then
+                    SET rw_count = -3;
+                  else
+                    select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
+                    INTO rw_count
+                    from wjk_tt_tmp_left_base_center
+                    where wjk_tt_tmp_left_base_center.train_no = ns_train_no
+                    and wjk_tt_tmp_left_base_center.train_date = ns_train_date
+                    and wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
+                    and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,rw_types) > 0;
+                    if @SWV_Error != 0 then
+                      LEAVE SWL_return;
+                    end if;
+                    if (rw_count IS NULL or rw_count <= 0) then
+                      SET rw_count = 0;
+                    end if;
+                  end if;
+                  if (wz_yn = 'n') then
+                    SET wz_count = -3;
+                  else
+                    select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
+                    INTO wz_count
+                    from wjk_tt_tmp_left_base_center
+                    where wjk_tt_tmp_left_base_center.train_no = ns_train_no
+                    and wjk_tt_tmp_left_base_center.train_date = ns_train_date
+                    and  wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
+                    and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,wz_types) > 0;
+                    if @SWV_Error != 0 then
+                      LEAVE SWL_return;
+                    end if;
+                    if (wz_count IS NULL or wz_count <= 0) then
+                      SET wz_count = 0;
+                    end if;
+                  end if;
+                  LEAVE step_one;
+                else
+                  if not exists(select 1 from wjk_tt_tmp_left_base_center
+                    where wjk_tt_tmp_left_base_center.train_date = ns_train_date
+                    and wjk_tt_tmp_left_base_center.train_no = ns_train_no)
+                    then
 
-        if ll_end_station_telecode <> end_station_telecode then
-          SET c_train_no = '000000000000';
-        end if;
-      end if;
-
-      if c_train_no = '000000000000' or c_train_no <> train_no then
-
-        SET c_train_no = '000000000000';
-      end if;
-
-
-
-      if c_train_no = '000000000000' then
-
-        SET yz_count = -1;
-        SET yw_count = -1;
-        SET rz_count = -1;
-        SET rw_count = -1;
-        SET wz_count = -1;
-        LEAVE step_two;
-      else
-        if ns_train_date = c_today and ns_start_time < c_current_date then
-
-          SET yz_count = -2;
-          SET yw_count = -2;
-          SET rz_count = -2;
-          SET rw_count = -2;
-          SET wz_count = -2;
-          LEAVE step_one;
-        end if;
-      end if;
-      if flag_in in(0,2) then
-
-        select   max(stop_time.station_no)
-        INTO ns_limit_station_no
-        from basic.stop_time
-        where stop_time.train_no = ns_train_no;
-
-        if @SWV_Error != 0 then
-          LEAVE SWL_return;
-        end if;
-        if ns_limit_station_no IS NULL then
-          SET ns_limit_station_no = '00';
-        end if;
-        SET ns_limit_station_name = ns_end_station_name;
-        if (yz_yn = 'n') then
-          SET yz_count = -3;
-        else
-          select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
-          INTO yz_count
-          from wjk_tt_tmp_left_base_center
-          where wjk_tt_tmp_left_base_center.train_no = ns_train_no
-          and wjk_tt_tmp_left_base_center.train_date = ns_train_date
-          and wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
-          and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,yz_types) > 0;
-          if @SWV_Error != 0 then
-            LEAVE SWL_return;
-          end if;
-          if (yz_count IS NULL or yz_count <= 0) then
-            SET yz_count = 0;
-          end if;
-        end if;
-        if (yw_yn = 'n') then
-          SET yw_count = -3;
-        else
-          select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
-          INTO yw_count
-          from wjk_tt_tmp_left_base_center
-          where wjk_tt_tmp_left_base_center.train_no = ns_train_no
-          and wjk_tt_tmp_left_base_center.train_date = ns_train_date
-          and wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
-          and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,yw_types) > 0;
-          if @SWV_Error != 0 then
-            LEAVE SWL_return;
-          end if;
-          if (yw_count IS NULL or yw_count <= 0) then
-            SET yw_count = 0;
-          end if;
-        end if;
-        if (rz_yn = 'n') then
-          SET rz_count = -3;
-        else
-          select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
-          INTO rz_count
-          from wjk_tt_tmp_left_base_center
-          where wjk_tt_tmp_left_base_center.train_no = ns_train_no
-          and wjk_tt_tmp_left_base_center.train_date = ns_train_date
-          and  wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
-          and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,rz_types) > 0;
-          if @SWV_Error != 0 then
-            LEAVE SWL_return;
-          end if;
-          if (rz_count IS NULL or rz_count <= 0) then
-            SET rz_count = 0;
-          end if;
-        end if;
-        if (rw_yn = 'n') then
-          SET rw_count = -3;
-        else
-          select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
-          INTO rw_count
-          from wjk_tt_tmp_left_base_center
-          where wjk_tt_tmp_left_base_center.train_no = ns_train_no
-          and wjk_tt_tmp_left_base_center.train_date = ns_train_date
-          and wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
-          and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,rw_types) > 0;
-          if @SWV_Error != 0 then
-            LEAVE SWL_return;
-          end if;
-          if (rw_count IS NULL or rw_count <= 0) then
-            SET rw_count = 0;
-          end if;
-        end if;
-        if (wz_yn = 'n') then
-          SET wz_count = -3;
-        else
-          select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
-          INTO wz_count
-          from wjk_tt_tmp_left_base_center
-          where wjk_tt_tmp_left_base_center.train_no = ns_train_no
-          and wjk_tt_tmp_left_base_center.train_date = ns_train_date
-          and  wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
-          and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,wz_types) > 0;
-          if @SWV_Error != 0 then
-            LEAVE SWL_return;
-          end if;
-          if (wz_count IS NULL or wz_count <= 0) then
-            SET wz_count = 0;
-          end if;
-        end if;
-        LEAVE step_one;
-      else
-        if not exists(select 1 from wjk_tt_tmp_left_base_center
-          where wjk_tt_tmp_left_base_center.train_date = ns_train_date
-          and wjk_tt_tmp_left_base_center.train_no = ns_train_no)
-          then
-
-          if (yz_yn = 'n') then
-            SET yz_count = -3;
-          else
-            SET yz_count = 0;
-          end if;
-          if (rz_yn = 'n') then
-            SET rz_count = -3;
-          else
-            SET rz_count = 0;
-          end if;
-          if (yw_yn = 'n') then
-            SET yw_count = -3;
-          else
-            SET yw_count = 0;
-          end if;
-          if (rw_yn = 'n') then
-            SET rw_count = -3;
-          else
-            SET rw_count = 0;
-          end if;
-          if (wz_yn = 'n') then
-            SET wz_count = -3;
-          else
-            SET wz_count = 0;
-          end if;
-          LEAVE step_one;
-        end if;
-        select   stop_time.station_no
-        INTO tmp_limit_station_no
-        from basic.stop_time
-        where stop_time.train_no = ns_train_no
-        and stop_time.station_telecode = single_assign_station
-        and stop_time.start_date <= ns_train_date and stop_date >= ns_train_date;
-        if tmp_limit_station_no IS NULL then
-          SET tmp_limit_station_no = '00';
-        end if;
-        begin
+                    if (yz_yn = 'n') then
+                      SET yz_count = -3;
+                    else
+                      SET yz_count = 0;
+                    end if;
+                    if (rz_yn = 'n') then
+                      SET rz_count = -3;
+                    else
+                      SET rz_count = 0;
+                    end if;
+                    if (yw_yn = 'n') then
+                      SET yw_count = -3;
+                    else
+                      SET yw_count = 0;
+                    end if;
+                    if (rw_yn = 'n') then
+                      SET rw_count = -3;
+                    else
+                      SET rw_count = 0;
+                    end if;
+                    if (wz_yn = 'n') then
+                      SET wz_count = -3;
+                    else
+                      SET wz_count = 0;
+                    end if;
+                    LEAVE step_one;
+                  end if;
+                  select   stop_time.station_no
+                  INTO tmp_limit_station_no
+                  from basic.stop_time
+                  where stop_time.train_no = ns_train_no
+                  and stop_time.station_telecode = single_assign_station
+                  and stop_time.start_date <= ns_train_date and stop_date >= ns_train_date;
+                  if tmp_limit_station_no IS NULL then
+                    SET tmp_limit_station_no = '00';
+                  end if;
+                  begin
 
 
-          DECLARE get_limit CURSOR FOR
-          SELECT distinct limit_station
-          FROM wjk_tt_tmp_left_base_center
-          where wjk_tt_tmp_left_base_center.train_date = ns_train_date
-          and wjk_tt_tmp_left_base_center.train_no = ns_train_no
-          and wjk_tt_tmp_left_base_center.limit_station > tmp_limit_station_no;
+                    DECLARE get_limit CURSOR FOR
+                    SELECT distinct limit_station
+                    FROM wjk_tt_tmp_left_base_center
+                    where wjk_tt_tmp_left_base_center.train_date = ns_train_date
+                    and wjk_tt_tmp_left_base_center.train_no = ns_train_no
+                    and wjk_tt_tmp_left_base_center.limit_station > tmp_limit_station_no;
 
-          OPEN get_limit;
-          SET NO_DATA = 0;
-          FETCH get_limit INTO ns_limit_station_no;
-          while NO_DATA != 2 DO
-            if NO_DATA = 1 then
+                    OPEN get_limit;
+                    SET NO_DATA = 0;
+                    FETCH get_limit INTO ns_limit_station_no;
+                    while NO_DATA != 2 DO
+                      if NO_DATA = 1 then
 
-              SET @SWV_Error = 30111;
-              SET SWP_Ret_Value = -1;
-              LEAVE SWL_return;
-            end if;
-
-
-
-
-
-
-            select   stop_time.station_name
-            INTO ns_limit_station_name
-            from basic.stop_time
-            where stop_time.train_no = ns_train_no
-            and stop_time.station_no = ns_limit_station_no;
-
-
-
-
-
-
-            if @SWV_Error != 0 then
-              LEAVE SWL_return;
-            end if;
-            if ns_limit_station_no IS NULL then
-              SET ns_limit_station_no = '00';
-            end if;
-            if ns_limit_station_name IS NULL then
-              SET ns_limit_station_name = ' ';
-            end if;
-
-
-
-
-
-
-
-            if (yz_yn = 'n') then
-              SET yz_count = -3;
-            else
-              select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
-              INTO yz_count
-              from wjk_tt_tmp_left_base_center
-              where wjk_tt_tmp_left_base_center.train_no = ns_train_no
-              and wjk_tt_tmp_left_base_center.train_date = ns_train_date
-              and  wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
-              and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,yz_types) > 0;
-              if @SWV_Error != 0 then
-                LEAVE SWL_return;
-              end if;
-              if (yz_count IS NULL or yz_count <= 0) then
-                SET yz_count = 0;
-              end if;
-            end if;
-            if (yw_yn = 'n') then
-              SET yw_count = -3;
-            else
-              select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
-              INTO yw_count
-              from wjk_tt_tmp_left_base_center
-              where wjk_tt_tmp_left_base_center.train_no = ns_train_no
-              and wjk_tt_tmp_left_base_center.train_date = ns_train_date
-              and  wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
-              and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,yw_types) > 0;
-              if @SWV_Error != 0 then
-                LEAVE SWL_return;
-              end if;
-              if (yw_count IS NULL or yw_count <= 0) then
-                SET yw_count = 0;
-              end if;
-            end if;
-            if (rz_yn = 'n') then
-              SET rz_count = -3;
-            else
-              select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
-              INTO rz_count
-              from wjk_tt_tmp_left_base_center
-              where wjk_tt_tmp_left_base_center.train_no = ns_train_no
-              and wjk_tt_tmp_left_base_center.train_date = ns_train_date
-              and  wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
-              and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,rz_types) > 0;
-              if @SWV_Error != 0 then
-                LEAVE SWL_return;
-              end if;
-              if (rz_count IS NULL or rz_count <= 0) then
-                SET rz_count = 0;
-              end if;
-            end if;
-            if (rw_yn = 'n') then
-              SET rw_count = -3;
-            else
-              select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
-              INTO rw_count
-              from wjk_tt_tmp_left_base_center
-              where wjk_tt_tmp_left_base_center.train_no = ns_train_no
-              and wjk_tt_tmp_left_base_center.train_date = ns_train_date
-              and  wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
-              and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,rw_types) > 0;
-              if @SWV_Error != 0 then
-                LEAVE SWL_return;
-              end if;
-              if (rw_count IS NULL or rw_count <= 0) then
-                SET rw_count = 0;
-              end if;
-            end if;
-            if (wz_yn = 'n') then
-              SET wz_count = -3;
-            else
-              select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
-              INTO wz_count
-              from wjk_tt_tmp_left_base_center
-              where wjk_tt_tmp_left_base_center.train_no = ns_train_no
-              and wjk_tt_tmp_left_base_center.train_date = ns_train_date
-              and  wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
-              and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,wz_types) > 0;
-              if @SWV_Error != 0 then
-                LEAVE SWL_return;
-              end if;
-              if (wz_count IS NULL or wz_count <= 0) then
-                SET wz_count = 0;
-              end if;
-            end if;
-
-
-
-
-
-            insert into tt_WJK_LEFT_remain_ticket
-            values(ns_station_telecode,
-              ns_train_no,
-              ns_station_train_code,
-              ns_train_date,
-              ns_start_station_name,
-              ns_end_station_name,
-              ns_limit_station_no,
-              ns_limit_station_name,
-              ns_direction_name,
-              ns_arrive_time,
-              ns_start_time,
-              yz_count,
-              yw_count,
-              rz_count,
-              rw_count,
-              wz_count);
-
-            SET NO_DATA = 0;
-            FETCH get_limit INTO ns_limit_station_no;
-        END WHILE;
-        CLOSE get_limit;
-      end;
-      LEAVE step_two;
+                        SET @SWV_Error = 30111;
+                        SET SWP_Ret_Value = -1;
+                        LEAVE SWL_return;
                       end if;
-                  END;
-                  leave step_one;
-                  end loop step_one;
 
-                  insert into tt_WJK_LEFT_remain_ticket
-                  values(ns_station_telecode,
-                    ns_train_no,
-                    ns_station_train_code,
-                    ns_train_date,
-                    ns_start_station_name,
-                    ns_end_station_name,
-                    ns_limit_station_no,
-                    ns_limit_station_name,
-                    ns_direction_name,
-                    ns_arrive_time,
-                    ns_start_time,
-                    yz_count,
-                    yw_count,
-                    rz_count,
-                    rw_count,
-                    wz_count);
+                      select   stop_time.station_name
+                      INTO ns_limit_station_name
+                      from basic.stop_time
+                      where stop_time.train_no = ns_train_no
+                      and stop_time.station_no = ns_limit_station_no;
+
+                      if @SWV_Error != 0 then
+                        LEAVE SWL_return;
+                      end if;
+                      if ns_limit_station_no IS NULL then
+                        SET ns_limit_station_no = '00';
+                      end if;
+                      if ns_limit_station_name IS NULL then
+                        SET ns_limit_station_name = ' ';
+                      end if;
+
+                      if (yz_yn = 'n') then
+                        SET yz_count = -3;
+                      else
+                        select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
+                        INTO yz_count
+                        from wjk_tt_tmp_left_base_center
+                        where wjk_tt_tmp_left_base_center.train_no = ns_train_no
+                        and wjk_tt_tmp_left_base_center.train_date = ns_train_date
+                        and  wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
+                        and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,yz_types) > 0;
+                        if @SWV_Error != 0 then
+                          LEAVE SWL_return;
+                        end if;
+                        if (yz_count IS NULL or yz_count <= 0) then
+                          SET yz_count = 0;
+                        end if;
+                      end if;
+                      if (yw_yn = 'n') then
+                        SET yw_count = -3;
+                      else
+                        select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
+                        INTO yw_count
+                        from wjk_tt_tmp_left_base_center
+                        where wjk_tt_tmp_left_base_center.train_no = ns_train_no
+                        and wjk_tt_tmp_left_base_center.train_date = ns_train_date
+                        and  wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
+                        and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,yw_types) > 0;
+                        if @SWV_Error != 0 then
+                          LEAVE SWL_return;
+                        end if;
+                        if (yw_count IS NULL or yw_count <= 0) then
+                          SET yw_count = 0;
+                        end if;
+                      end if;
+                      if (rz_yn = 'n') then
+                        SET rz_count = -3;
+                      else
+                        select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
+                        INTO rz_count
+                        from wjk_tt_tmp_left_base_center
+                        where wjk_tt_tmp_left_base_center.train_no = ns_train_no
+                        and wjk_tt_tmp_left_base_center.train_date = ns_train_date
+                        and  wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
+                        and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,rz_types) > 0;
+                        if @SWV_Error != 0 then
+                          LEAVE SWL_return;
+                        end if;
+                        if (rz_count IS NULL or rz_count <= 0) then
+                          SET rz_count = 0;
+                        end if;
+                      end if;
+                      if (rw_yn = 'n') then
+                        SET rw_count = -3;
+                      else
+                        select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
+                        INTO rw_count
+                        from wjk_tt_tmp_left_base_center
+                        where wjk_tt_tmp_left_base_center.train_no = ns_train_no
+                        and wjk_tt_tmp_left_base_center.train_date = ns_train_date
+                        and  wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
+                        and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,rw_types) > 0;
+                        if @SWV_Error != 0 then
+                          LEAVE SWL_return;
+                        end if;
+                        if (rw_count IS NULL or rw_count <= 0) then
+                          SET rw_count = 0;
+                        end if;
+                      end if;
+                      if (wz_yn = 'n') then
+                        SET wz_count = -3;
+                      else
+                        select   sum(wjk_tt_tmp_left_base_center.ticket_quantity)
+                        INTO wz_count
+                        from wjk_tt_tmp_left_base_center
+                        where wjk_tt_tmp_left_base_center.train_no = ns_train_no
+                        and wjk_tt_tmp_left_base_center.train_date = ns_train_date
+                        and  wjk_tt_tmp_left_base_center.limit_station = ns_limit_station_no
+                        and LOCATE(wjk_tt_tmp_left_base_center.seat_type_code,wz_types) > 0;
+                        if @SWV_Error != 0 then
+                          LEAVE SWL_return;
+                        end if;
+                        if (wz_count IS NULL or wz_count <= 0) then
+                          SET wz_count = 0;
+                        end if;
+                      end if;
 
 
-                END;
-                leave step_two;
-                                  end loop step_two;
-                                  SET ni_day = ni_day+1;
-            end;
-          END WHILE;
+                      insert into tt_WJK_LEFT_remain_ticket
+                      values(ns_station_telecode,
+                        ns_train_no,
+                        ns_station_train_code,
+                        ns_train_date,
+                        ns_start_station_name,
+                        ns_end_station_name,
+                        ns_limit_station_no,
+                        ns_limit_station_name,
+                        ns_direction_name,
+                        ns_arrive_time,
+                        ns_start_time,
+                        yz_count,
+                        yw_count,
+                        rz_count,
+                        rw_count,
+                        wz_count);
+
+                      SET NO_DATA = 0;
+                      FETCH get_limit INTO ns_limit_station_no;
+                    END WHILE;
+                    CLOSE get_limit;
+                end;
+                LEAVE step_two;
+              end if;
+              END;
+              leave step_one;
+              end loop step_one;
+
+              insert into tt_WJK_LEFT_remain_ticket
+              values(ns_station_telecode,
+                ns_train_no,
+                ns_station_train_code,
+                ns_train_date,
+                ns_start_station_name,
+                ns_end_station_name,
+                ns_limit_station_no,
+                ns_limit_station_name,
+                ns_direction_name,
+                ns_arrive_time,
+                ns_start_time,
+                yz_count,
+                yw_count,
+                rz_count,
+                rw_count,
+                wz_count);
+
+
+            END;
+            leave step_two;
+            end loop step_two;
+            SET ni_day = ni_day+1;
+          end;
+        END WHILE;
       end;
     END WHILE;
     SET tmp_no = tmp_no+1;
-END WHILE;
+  END WHILE;
 
 
-CREATE TEMPORARY TABLE IF not EXISTS  wjk_tt_tmp
-AS
-select tt_WJK_LEFT_remain_ticket.train_code
-from tt_WJK_LEFT_remain_ticket
-group by tt_WJK_LEFT_remain_ticket.train_code
-having count(*) >= 2;
+  CREATE TEMPORARY TABLE IF not EXISTS  wjk_tt_tmp
+  AS
+  select tt_WJK_LEFT_remain_ticket.train_code
+  from tt_WJK_LEFT_remain_ticket
+  group by tt_WJK_LEFT_remain_ticket.train_code
+  having count(*) >= 2;
 
 
-open cur_dele;
-SET NO_DATA = 0;
-fetch cur_dele into tmp_train_code;
-while NO_DATA != 2 DO
-  if NO_DATA = 1 then
-
-    SET @SWV_Error = 30111;
-    SET SWP_Ret_Value = -1;
-    LEAVE SWL_return;
-  end if;
-
-  delete FROM tt_WJK_LEFT_remain_ticket
-  where tt_WJK_LEFT_remain_ticket.train_code = tmp_train_code
-  and tt_WJK_LEFT_remain_ticket.yz_count = -1
-  and tt_WJK_LEFT_remain_ticket.yw_count = -1
-  and tt_WJK_LEFT_remain_ticket.rz_count = -1
-  and tt_WJK_LEFT_remain_ticket.rw_count = -1
-  and tt_WJK_LEFT_remain_ticket.wz_count = -1;
+  open cur_dele;
   SET NO_DATA = 0;
   fetch cur_dele into tmp_train_code;
-END WHILE;
-close cur_dele;
+  while NO_DATA != 2 DO
+    if NO_DATA = 1 then
 
+      SET @SWV_Error = 30111;
+      SET SWP_Ret_Value = -1;
+      LEAVE SWL_return;
+    end if;
 
-if out_flag=2 then
-  select '21====',assign_station_in;
-end if;
-if LOCATE('BXP',assign_station_in) > 0 then
-  update tt_WJK_LEFT_remain_ticket
-  set tt_WJK_LEFT_remain_ticket.train_code = 'T97'
-  where tt_WJK_LEFT_remain_ticket.train_code = 'Q97';
-end if;
+    delete FROM tt_WJK_LEFT_remain_ticket
+    where tt_WJK_LEFT_remain_ticket.train_code = tmp_train_code
+    and tt_WJK_LEFT_remain_ticket.yz_count = -1
+    and tt_WJK_LEFT_remain_ticket.yw_count = -1
+    and tt_WJK_LEFT_remain_ticket.rz_count = -1
+    and tt_WJK_LEFT_remain_ticket.rw_count = -1
+    and tt_WJK_LEFT_remain_ticket.wz_count = -1;
+    SET NO_DATA = 0;
+    fetch cur_dele into tmp_train_code;
+  END WHILE;
+  close cur_dele;
 
+  if out_flag=2 then
+    select '21====',assign_station_in;
+  end if;
+  if LOCATE('BXP',assign_station_in) > 0 then
+    update tt_WJK_LEFT_remain_ticket
+    set tt_WJK_LEFT_remain_ticket.train_code = 'T97'
+    where tt_WJK_LEFT_remain_ticket.train_code = 'Q97';
+  end if;
 
+  SET ns_train_date = DATE_FORMAT(TIMESTAMPADD(day,9,CURRENT_TIMESTAMP),'%Y%m%d');
 
+  select tt_WJK_LEFT_remain_ticket.station_telecode,
+  tt_WJK_LEFT_remain_ticket.train_no,
+  tt_WJK_LEFT_remain_ticket.train_code,
+  tt_WJK_LEFT_remain_ticket.train_date,
+  tt_WJK_LEFT_remain_ticket.start_station_name,
+  tt_WJK_LEFT_remain_ticket.end_station_name,
+  tt_WJK_LEFT_remain_ticket.limit_station_name,
+  tt_WJK_LEFT_remain_ticket.direction_name,
+  tt_WJK_LEFT_remain_ticket.arrive_time,
+  tt_WJK_LEFT_remain_ticket.start_time,
+  tt_WJK_LEFT_remain_ticket.yz_count,
+  tt_WJK_LEFT_remain_ticket.yw_count,
+  tt_WJK_LEFT_remain_ticket.rz_count,
+  tt_WJK_LEFT_remain_ticket.rw_count,
+  tt_WJK_LEFT_remain_ticket.wz_count
+  from tt_WJK_LEFT_remain_ticket
+  order by tt_WJK_LEFT_remain_ticket.station_telecode,tt_WJK_LEFT_remain_ticket.train_date,tt_WJK_LEFT_remain_ticket.train_no,
+    tt_WJK_LEFT_remain_ticket.direction_name,tt_WJK_LEFT_remain_ticket.limit_station_name;
 
-SET ns_train_date = DATE_FORMAT(TIMESTAMPADD(day,9,CURRENT_TIMESTAMP),'%Y%m%d');
-
-
-
-
-
-
-
-
-select tt_WJK_LEFT_remain_ticket.station_telecode,
-tt_WJK_LEFT_remain_ticket.train_no,
-tt_WJK_LEFT_remain_ticket.train_code,
-tt_WJK_LEFT_remain_ticket.train_date,
-tt_WJK_LEFT_remain_ticket.start_station_name,
-tt_WJK_LEFT_remain_ticket.end_station_name,
-tt_WJK_LEFT_remain_ticket.limit_station_name,
-tt_WJK_LEFT_remain_ticket.direction_name,
-tt_WJK_LEFT_remain_ticket.arrive_time,
-tt_WJK_LEFT_remain_ticket.start_time,
-tt_WJK_LEFT_remain_ticket.yz_count,
-tt_WJK_LEFT_remain_ticket.yw_count,
-tt_WJK_LEFT_remain_ticket.rz_count,
-tt_WJK_LEFT_remain_ticket.rw_count,
-tt_WJK_LEFT_remain_ticket.wz_count
-from tt_WJK_LEFT_remain_ticket
-order by tt_WJK_LEFT_remain_ticket.station_telecode,tt_WJK_LEFT_remain_ticket.train_date,tt_WJK_LEFT_remain_ticket.train_no,
-tt_WJK_LEFT_remain_ticket.direction_name,tt_WJK_LEFT_remain_ticket.limit_station_name;
-
-SET SWP_Ret_Value = 0;
+  SET SWP_Ret_Value = 0;
 END ;;
