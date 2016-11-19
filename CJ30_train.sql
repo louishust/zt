@@ -126,10 +126,14 @@ BEGIN
   SET double_id = SUBSTRING(train_no,11,1);
   SET schema_id = SUBSTRING(train_no,12,1);
   SET running_true = -1;
-  WHILE SUBSTRING(train_code,1,1) = '0' DO
-    SET train_code = ltrim(rtrim(INSERT(train_code,1,1,'')));
-  END WHILE;
-  SET train_code = ltrim(rtrim(train_code));
+  --- IMPORTANT   make sure the train_code format and use trim instead of SUBSTRING */
+  set train_code = trim(LEADING '0' FROM train_code);
+  set train_code = ltrim(rtrim(train_code));
+
+  /* WHILE SUBSTRING(train_code,1,1) = '0' DO */
+  /*   SET train_code = ltrim(rtrim(INSERT(train_code,1,1,''))); */
+  /* END WHILE; */
+  /* SET train_code = ltrim(rtrim(train_code)); */
 
   if out_flag=2 then
     select '3====',train_code,subbureau_code,double_id,schema_id;
